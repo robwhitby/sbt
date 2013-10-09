@@ -13,14 +13,9 @@ object BuildSettings {
   import Project._
   import Defaults._
 
-  val SCALA_VERSION = "2.10.2"
-
   lazy val buildSettings = {
     Seq(
-      organization := "springer",
-      name := "casper-core",
-      version := "LOCAL",
-      scalaVersion := SCALA_VERSION,
+      scalaVersion := "2.10.2",
       libraryDependencies := Seq("org.scalatest" % "scalatest_2.10" % "1.9.2")
     ) ++
       unitTestSettings ++
@@ -39,17 +34,16 @@ object BuildSettings {
   private def createTestSettings(testType: String, testConfiguration: Configuration) = {
     println("creating settings for " + testType + " : " + testConfiguration)
     inConfig(testConfiguration)(Defaults.testSettings) ++
-      (sourceDirectory in testConfiguration <<= baseDirectory(_ / "src" / "test")) ++
-      (sources in IntegrationTests := ( ((file("src") / "test") ** "*.scala").get).filter(shouldInclude(_, testType))  ) ++
-      (classDirectory in testConfiguration <<= crossTarget(_ / "test-classes"))
-      
-      // (testOptions in testConfiguration := Seq(Tests.Filter(name => name contains "."+testType+".")))
-      // (testOptions in testConfiguration += Tests.Argument("-oDF"))
+    (sourceDirectory in testConfiguration <<= baseDirectory(_ / "src" / "test")) ++
+    (sources in IntegrationTests := ( ((file("src") / "test") ** "*.scala").get).filter(shouldInclude(_, testType))  ) ++
+    (classDirectory in testConfiguration <<= crossTarget(_ / "test-classes"))      
+    // (testOptions in testConfiguration := Seq(Tests.Filter(name => name contains "."+testType+".")))
+    // (testOptions in testConfiguration += Tests.Argument("-oDF"))
   }
     
   def shouldInclude(testFile: File, testType: String) = {
     val path = testFile.toURI.toString
-    val result = path.contains("/" + testType + "/") || path.contains("/shared/") || path.contains("ScalatePackage") // FIXME
+    val result = path.contains("/" + testType + "/") || path.contains("/shared/") || path.contains("ScalatePackage")
     printf("%s: should include %s => %s %n", testType, path, result)
     result
   }  
@@ -63,7 +57,6 @@ object CasperBuild extends Build {
     .configs(Test)
     .configs(IntegrationTests)
     .configs(FunctionalTests)
-    // .settings(inConfig(IntegrationTests)(Defaults.testSettings) : _*)
     .settings(buildSettings : _*)
 }
 

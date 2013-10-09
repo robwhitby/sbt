@@ -35,7 +35,7 @@ object BuildSettings {
     println("creating settings for " + testType + " : " + testConfiguration)
     inConfig(testConfiguration)(Defaults.testSettings) ++
     (sourceDirectory in testConfiguration <<= baseDirectory(_ / "src" / "test")) ++
-    (sources in IntegrationTests := ( ((file("src") / "test") ** "*.scala").get).filter(shouldInclude(_, testType))  ) ++
+    (sources in testConfiguration := ( ((file("src") / "test") ** "*.scala").get).filter(shouldInclude(_, testType))  ) ++
     (classDirectory in testConfiguration <<= crossTarget(_ / "test-classes"))      
     // (testOptions in testConfiguration := Seq(Tests.Filter(name => name contains "."+testType+".")))
     // (testOptions in testConfiguration += Tests.Argument("-oDF"))
@@ -55,8 +55,6 @@ object CasperBuild extends Build {
 
   lazy val core = Project("core", file("."))  
     .configs(Test)
-    .configs(IntegrationTests)
-    .configs(FunctionalTests)
     .settings(buildSettings : _*)
 }
 

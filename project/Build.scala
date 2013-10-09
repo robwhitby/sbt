@@ -23,7 +23,8 @@ object BuildSettings {
       functionalTestSettings
   }
 
-  lazy val unitTestSettings = createTestSettings("unit", Test)
+  lazy val UnitTests = config("unit") extend(Test)
+  lazy val unitTestSettings = createTestSettings("unit", UnitTests)
 
   lazy val IntegrationTests = config("integration") extend(Test)
   lazy val integrationTestSettings = createTestSettings("integration", IntegrationTests)

@@ -1,0 +1,23 @@
+## generic files
+*~
+*.lock
+*.DS_Store
+*.swp
+*.out
+
+# java
+*.class
+
+# sbt
+target/
+artifacts/
+project/boot/
+lib_managed/
+.lib/
+
+# intellij
+*.iws
+.*.sw?
+
+# jrebel
+licensing.info

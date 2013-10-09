@@ -1,0 +1,3 @@
+
+scalacOptions ++= Seq( /* "-Ystatistics", "-verbose" */ )
+
